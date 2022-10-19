@@ -260,3 +260,57 @@ const itemsObject = [
     "vote_count": 4233
   }
 ];
+
+const prev  = document.querySelector('.prev');
+const next = document.querySelector('.next');
+const track = document.querySelector('.track');
+let carouselWidth = document.querySelector('.carousel-container').offsetWidth + 10;
+
+window.addEventListener('resize', () => {
+  carouselWidth = document.querySelector('.carousel-container').offsetWidth + 10;
+});
+
+window.addEventListener("load", initializeSlider());
+			  
+function initializeSlider() {
+  let items = "";
+  for(let item in itemsObject) {
+    items += `<div class="movie">
+				<img src="https://image.tmdb.org/t/p/w1280${itemsObject[item].poster_path}" alt="${itemsObject[item].title}">
+				<div class="movie-info">
+					<h3>${itemsObject[item].title}</h3>
+					<div class="res-circle">
+						<div class="circle-txt">${itemsObject[item].vote_average}</div>
+					</div>
+				</div>
+				<div class="overview">
+					<h3>Overview</h3>
+					${itemsObject[item].overview}
+				</div>
+			</div>`;
+  }
+  track.innerHTML = items;
+};
+
+let index = 0;
+
+next.addEventListener('click', () => {
+  index++;
+  prev.classList.add('show');
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+
+  if (track.offsetWidth - (index * carouselWidth) < carouselWidth) {
+    next.classList.add('hide');
+  }
+});
+
+prev.addEventListener('click', () => {
+  index--;
+  next.classList.remove('hide');
+
+  if (index === 0) {
+    prev.classList.remove('show');
+  }
+
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+});
