@@ -261,56 +261,80 @@ const itemsObject = [
   }
 ];
 
-const prev  = document.querySelector('.prev');
-const next = document.querySelector('.next');
-const track = document.querySelector('.track');
-let carouselWidth = document.querySelector('.carousel-container').offsetWidth + 10;
+let swiper;
 
-window.addEventListener('resize', () => {
-  carouselWidth = document.querySelector('.carousel-container').offsetWidth + 10;
-});
+window.addEventListener("load", init());
 
-window.addEventListener("load", initializeSlider());
+function init () {
+	setTimeout(() => {
+		initializeSlides().then(() => {
+			hideLoader();
+			initializeSwiper();
+		}).catch(error => {
+		  console.log(error.name + ' ' + error.message)
+		})
+	}, 1500);
+}
+
+function hideLoader() {
+	document.querySelector('.loader').classList.add("hide");
+}
 			  
-function initializeSlider() {
+function initializeSlides() {
   let items = "";
-  for(let item in itemsObject) {
-    items += `<div class="movie">
-				<img src="https://image.tmdb.org/t/p/w1280${itemsObject[item].poster_path}" alt="${itemsObject[item].title}">
-				<div class="movie-info">
-					<h3>${itemsObject[item].title}</h3>
-					<div class="res-circle">
-						<div class="circle-txt">${itemsObject[item].vote_average}</div>
+		  
+  return new Promise((resolve, reject) => {
+	  for(let item in itemsObject) {
+		items += `<div class="swiper-slide">
+					<div class="movie">
+						<img src="https://image.tmdb.org/t/p/w1280${itemsObject[item].poster_path}" alt="${itemsObject[item].title}">
+						<div class="movie-info">
+							<h3>${itemsObject[item].title}</h3>
+							<div class="res-circle">
+								<div class="circle-txt">${itemsObject[item].vote_average}</div>
+							</div>
+						</div>
+						<div class="overview">
+							<h3>Overview</h3>
+							${itemsObject[item].overview}
+						</div>
 					</div>
-				</div>
-				<div class="overview">
-					<h3>Overview</h3>
-					${itemsObject[item].overview}
-				</div>
-			</div>`;
-  }
-  track.innerHTML = items;
+				</div>`;
+	  }
+	  
+	  if (items != "") {
+		  document.querySelector('.swiper-wrapper').innerHTML = items;
+		  resolve();
+	  } else {
+		 reject({
+			name: 'empty',
+			message: 'Empty items.' 
+		 });
+	  }
+  })
 };
 
-let index = 0;
+function initializeSwiper() {
+	document.querySelector('.swiper-container').classList.remove("hide");
 
-next.addEventListener('click', () => {
-  index++;
-  prev.classList.add('show');
-  track.style.transform = `translateX(-${index * carouselWidth}px)`;
-
-  if (track.offsetWidth - (index * carouselWidth) < carouselWidth) {
-    next.classList.add('hide');
-  }
-});
-
-prev.addEventListener('click', () => {
-  index--;
-  next.classList.remove('hide');
-
-  if (index === 0) {
-    prev.classList.remove('show');
-  }
-
-  track.style.transform = `translateX(-${index * carouselWidth}px)`;
-});
+	swiper = new Swiper(".swiper-container", {
+		effect: "coverflow",
+		slidesPerView: 1,
+		grabCursor: true,
+		centeredSlides: true,
+		slidesPerView: "auto",
+		loop: true,
+		fade: true,
+		navigation: {
+		  nextEl: ".swiper-button-next",
+		  prevEl: ".swiper-button-prev",
+		},
+		coverflowEffect: {
+		  rotate: 20,
+		  stretch: 0,
+		  depth: 100,
+		  modifier: 1,
+		  slideShadows: true,
+		},
+	});
+}
