@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
 
 :root {
-  --primary-color: #22254b;
-  --secondary-color: #373b69;
+  --primary-color: #b4f67a;
+  --secondary-color: #376961;
 }
 
 body {
@@ -118,7 +118,7 @@ main {
   display: none;
 }
 
-.card > * {
+.card>* {
   flex: 1;
 }
 
@@ -162,7 +162,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap:0.2rem;
+  gap: 0.2rem;
   padding: 0.5rem 1rem 1rem;
   letter-spacing: 0.5px;
 }
@@ -178,14 +178,15 @@ main {
 
 .movie-info .res-circle {
   border-radius: 50%;
-  background-color: var(--primary-color);
+  background-color: rgb(24, 242, 227);
   border: 3px solid #000;
   line-height: 0;
   position: relative;
   width: 60px;
   height: 60px;
+  color: rgb(4, 23, 23);
 }
- 
+
 .movie-info .circle-txt {
   position: absolute;
   bottom: 50%;
@@ -213,4 +214,8 @@ main {
 
 .movie:hover .overview {
   transform: translateY(0);
+}
+
+h1 {
+  text-align: center;
 }

@@ -1,4 +1,4 @@
-const itemsObject = [
+const moviesObject = [
   {
     "id": 760161,
     "original_language": "en",
@@ -260,3 +260,57 @@ const itemsObject = [
     "vote_count": 4233
   }
 ];
+
+const prev = document.querySelector('.prev');
+const next = document.querySelector('.next');
+const track = document.querySelector('.track');
+let carouselWidth = document.querySelector('.carousel-container').offsetWidth;
+let clicks = 0;
+let cardListLength = 0;
+
+next.addEventListener('click', () => {
+  clicks += 1;
+  cardListLength = carouselWidth * clicks;
+  track.style.transform = `translateX(-${cardListLength}px)`;
+  prev.classList.add('show');
+  if (track.offsetWidth - cardListLength < carouselWidth) {
+    next.classList.add('hide');
+  }
+});
+
+prev.addEventListener('click', () => {
+
+  clicks -= 1;
+  cardListLength = carouselWidth * clicks;
+  next.classList.remove('hide');
+  
+  if (clicks === 0) {
+    prev.classList.remove('show');
+  }
+
+  track.style.transform = `translateX(-${cardListLength}px)`;
+
+});
+
+
+window.onload = () => {
+  let movies = '';
+  for (let movie in moviesObject) {
+    movies += `<div class="movie">
+    <img src="https://image.tmdb.org/t/p/w1280${moviesObject[movie].poster_path}" alt="${moviesObject[movie].title}">
+    <div class="movie-info">
+      <h3>${moviesObject[movie].title}</h3>
+      <div class="res-circle">
+        <div class="circle-txt">${moviesObject[movie].vote_average}</div>
+      </div>
+    </div>
+    <div class="overview">
+      <h3>Overview</h3>
+      ${moviesObject[movie].overview}
+    </div>
+  </div>`;
+  }
+
+  track.innerHTML = movies;
+
+};
