@@ -260,3 +260,52 @@ const itemsObject = [
     "vote_count": 4233
   }
 ];
+
+const prev = document.querySelector('.prev');
+const next = document.querySelector('.next');
+
+const track = document.querySelector('.track');
+const carouselContainerWidth = document.querySelector('.carousel-container').offsetWidth+10;
+
+window.addEventListener("load", buildCarousel());
+
+function buildCarousel() {
+  let elements = "";
+  for(let element in itemsObject) {
+    elements += `<div class="movie">
+    <img src="https://image.tmdb.org/t/p/w1280${itemsObject[element].poster_path}" alt="${itemsObject[element].title}">
+    <div class="movie-info">
+      <h3>${itemsObject[element].title}</h3>
+      <div class="res-circle">
+        <div class="circle-txt">${itemsObject[element].vote_average}</div>
+      </div>
+    </div>
+    <div class="overview">
+      <h3>Overview</h3>
+      ${itemsObject[element].overview}
+    </div>
+  </div>`;
+  }
+  track.innerHTML = elements;
+};
+
+let index = 0;
+
+next.addEventListener('click', () => {
+  index++;
+  prev.classList.add('show');
+  track.style.transform = `translateX(-${index * carouselContainerWidth}px)`;
+
+  if (track.offsetWidth - (index * carouselContainerWidth) < carouselContainerWidth ) {
+    next.classList.add('hide');
+  }
+})
+
+prev.addEventListener('click', () => {
+  index--;
+  next.classList.remove('hide');
+  if (index === 0) {
+    prev.classList.remove('show');
+  }
+  track.style.transform = `translateX(-${index * carouselContainerWidth}px)`;
+})
