@@ -260,3 +260,69 @@ const itemsObject = [
     "vote_count": 4233
   }
 ];
+
+const next = document.querySelector(".next");
+const prev = document.querySelector(".prev");
+const track = document.querySelector(".track");
+
+let carouselWidth = document.querySelector('.carousel-container').offsetWidth;
+
+window.addEventListener('resize', () => {
+  carouselWidth = document.querySelector('.carousel-container').offsetWidth;
+})
+
+let index = 0;
+
+function moveNext(){
+  index++;
+  prev.classList.add('show');
+  track.style.transform = `translatex(-${index * carouselWidth}px)`;
+  const trackTranslate = track.style.transform.match(/-+[0-9]+/);
+  if(track.offsetWidth - (index* carouselWidth) < carouselWidth){
+  next.classList.add('hide');
+  }
+}
+
+function moveBack(){
+  index--;
+  next.classList.remove('hide');
+  if(index==0){
+    prev.classList.remove('show');
+  }
+
+  track.style.transform = `translatex(-${index * carouselWidth}px)`;
+}
+
+next.addEventListener('click', moveNext);
+prev.addEventListener('click', moveBack);
+
+for(const items of itemsObject){
+
+  const divMovie =document.createElement("div");
+  divMovie.className= "movie";
+  divMovie.innerHTML=`<img src="https://image.tmdb.org/t/p/w1280${items['poster_path']}" alt="${items['title']}">`;
+  track.appendChild(divMovie);
+
+
+  const divMovieInfo =document.createElement("div");
+  divMovieInfo.className= "movie-info";
+  divMovieInfo.innerHTML=`<h3>${items['title']}</h3>`;
+  divMovie.appendChild(divMovieInfo);
+
+  const resCircle =document.createElement("div");
+  resCircle.className="res-circle";
+  divMovieInfo.appendChild(resCircle);
+
+  const circleTXT =document.createElement("div");
+  circleTXT.className="circle-txt";
+  circleTXT.innerHTML=`${items['vote_average']}`;
+  resCircle.appendChild(circleTXT);
+
+
+  const divOverview =document.createElement("div");
+  divOverview.className="overview";
+  divOverview.innerHTML=`<h3>Overview</h3>${items['overview']}`;
+  divMovie.appendChild(divOverview);
+}
+
+
