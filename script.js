@@ -260,3 +260,59 @@ const itemsObject = [
     "vote_count": 4233
   }
 ];
+
+const prev = document.querySelector('.prev');
+const next = document.querySelector('.next');
+const track = document.querySelector('.track');
+
+const carouselWidth = document.querySelector('.carousel-container').offsetWidth+10;
+
+let index = 0;
+
+next.addEventListener('click', () => {
+  index++;
+  prev.classList.add('show');
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+
+  if (track.offsetWidth - (index * carouselWidth) < carouselWidth ) {
+    next.classList.add('hide');
+  }
+})
+
+prev.addEventListener('click', () => {
+  index--;
+  next.classList.remove('hide');
+  if (index === 0) {
+    prev.classList.remove('show');
+  }
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+})
+
+for(let items of itemsObject){
+
+  const divMovie =document.createElement("div");
+  divMovie.className= "movie";
+  divMovie.innerHTML=`<img src="https://image.tmdb.org/t/p/w1280${items['poster_path']}" alt="${items['title']}">`;
+  track.appendChild(divMovie);
+
+
+  const divMovieInfo =document.createElement("div");
+  divMovieInfo.className= "movie-info";
+  divMovieInfo.innerHTML=`<h3>${items['title']}</h3>`;
+  divMovie.appendChild(divMovieInfo);
+
+  const resCircle =document.createElement("div");
+  resCircle.className="res-circle";
+  divMovieInfo.appendChild(resCircle);
+
+  const circleTXT =document.createElement("div");
+  circleTXT.className="circle-txt";
+  circleTXT.innerHTML=`${items['vote_average']}`;
+  resCircle.appendChild(circleTXT);
+
+
+  const divOverview =document.createElement("div");
+  divOverview.className="overview";
+  divOverview.innerHTML=`<h3>Overview</h3>${items['overview']}`;
+  divMovie.appendChild(divOverview);
+}
