@@ -260,3 +260,88 @@ const itemsObject = [
     "vote_count": 4233
   }
 ];
+
+function createMovieElement(el) {
+  // Select the main div to insert items
+  const trackNode = document.querySelector(".track",)
+  // Create the outer div
+  const divNodeMovie = document.createElement("div");
+  divNodeMovie.className = "movie";
+
+  // Create an image inside
+  const imgNode = document.createElement("img");
+  imgNode.src = `https://image.tmdb.org/t/p/w1280/${el.poster_path}`;
+  imgNode.alt = el.title;
+  divNodeMovie.append(imgNode);
+
+  // Create the movie info div inside
+  const divNodeMovieInfo = document.createElement("div");
+  divNodeMovieInfo.className = "movie-info";
+
+  // Create the title inside
+  const h3Node = document.createElement("h3");
+  h3Node.innerText = el.title;
+  divNodeMovieInfo.append(h3Node);
+
+  // Create the res-circle div
+  const divNodeResCircle = document.createElement("div");
+  divNodeResCircle.className = "res-circle";
+  divNodeMovieInfo.append(divNodeResCircle);
+
+  // Create another div inside with the value
+  const divNodeCircleTxt = document.createElement("div");
+  divNodeCircleTxt.className = "circle-txt";
+  divNodeCircleTxt.innerText = el.vote_average;
+  divNodeResCircle.append(divNodeCircleTxt);
+
+  // Append the movie div to the movie div
+  divNodeMovie.append(divNodeMovieInfo);
+
+  // Create the overview div
+  const divNodeOverview = document.createElement("div");
+  divNodeOverview.className = "overview";
+  // Create a h3 inside
+  divNodeOverview.innerHTML = `<h3>Overview</h3> ${el.overview}`;
+  divNodeMovie.append(divNodeOverview);
+
+  // Insert everything into the track node
+  trackNode.appendChild(divNodeMovie);
+}
+
+itemsObject.forEach(el => createMovieElement(el));
+
+// Create the nav elements
+const prevButton = document.querySelector(".prev");
+const nextButton = document.querySelector(".next");
+
+const track = document.querySelector(".track");
+const carouselWidth = document.querySelector(".carousel-container").offsetWidth;
+
+window.addEventListener("resize", () => {
+  let carouselWidth = document.querySelector(".carousel-container").offsetWidth;
+})
+
+let index = 0;
+
+// Adding the click events
+nextButton.addEventListener("click", () => {
+  
+  index++;
+  prevButton.classList.add("show");
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+  
+  if (track.offsetWidth - index * carouselWidth < carouselWidth){
+    nextButton.classList.add("hide");
+  }
+
+});
+
+prevButton.addEventListener("click", () => {
+
+  index--;
+  nextButton.classList.remove("hide");
+  if (index === 0){
+    prevButton.classList.remove("show");
+  }
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+});
