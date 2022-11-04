@@ -260,3 +260,31 @@ const itemsObject = [
     "vote_count": 4233
   }
 ];
+
+
+// custom code
+
+function movieTemplate(movie) {
+  return `
+  <div class="swiper-slide">
+      <div class="movie">
+        <img src="https://image.tmdb.org/t/p/w1280/${movie.poster_path}" alt="${movie.original_title}">
+        <div class="movie-info">
+           <h3>${movie.title}</h3>
+          <div class="res-circle">
+            <div class="circle-txt">${movie.vote_average}</div>
+          </div>
+        </div>
+      <div class="overview">
+        <h3>Overview</h3>
+        ${movie.overview}
+        </div>
+      </div> 
+    </div> 
+  </div>  
+  `;
+}
+
+document.getElementById("sw").innerHTML = `
+  ${itemsObject.map(movieTemplate).join("")}
+`;
