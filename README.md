@@ -1,4 +1,4 @@
-﻿### Multiple Item Carousel
+﻿# Multiple Item Carousel
 
 ## Steps
 
